@@ -5,17 +5,33 @@ let locations = [];
 function initMap() {
   map = L.map('map').setView([42.9545, -85.4924], 13);
 
-  //add titles+copyrights
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
+  let controlKeyPressed = false;
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Control') {
+      controlKeyPressed = true;
+      map.getContainer().style.cursor = 'crosshair';
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === 'Control') {
+      controlKeyPressed = false;
+      map.getContainer().style.cursor = '';
+    }
+  });
 
   map.on('dblclick', (event) => {
-    const name = window.prompt('Enter a name for this location:');
-    if (name === null) return; // If the user pressed "Cancel" in the prompt, don't place the marker or circle.
+    if (!controlKeyPressed) return;
 
-    placeMarker(event.latlng, name);
+    const message = window.prompt('Enter a name for this location:');
+    if (message === null) return;
+
+    placeMarker(event.latlng, message);
   });
 }
 
