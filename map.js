@@ -3,7 +3,7 @@ let locations = [];
 
 //initialize map
 function initMap() {
-  map = L.map('map').setView([51.505, -0.09], 13);
+  map = L.map('map').setView([42.9545, -85.4924], 13);
 
   //add titles+copyrights
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -60,7 +60,7 @@ function drawCircle(location, enabled) {
     color: enabled ? 'blue' : 'gray',
     fillColor: enabled ? '#f03' : '#aaa',
     fillOpacity: 0.5,
-    radius: 65
+    radius: 16.25
   }).addTo(map);
 
   return circle;
@@ -142,10 +142,11 @@ function setTooltipContent(marker, name, imageSrc, enabled, locationObj, isEdita
 
 //send to backend
 function sendAllLocationsToBackend() {
-  const locationsToSend = locations.map(location => {
+  var locationsToSend = locations.map(location => {
     const { circle, ...locationWithoutCircle } = location;
     return locationWithoutCircle;
   });
+  locationsToSend = JSON.stringify(locationsToSend);
   console.log('Sending all locations to backend:', locationsToSend);
 
 
